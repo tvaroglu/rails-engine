@@ -5,7 +5,7 @@ RSpec.describe 'api/v1/merchants#index' do
     # This should fetch items 51 through 100,
       # since we’re returning 50 per “page”,
       # and we want “page 2” of data:
-    create_list(:merchant, 132)
+    create_list(:merchant, 150)
 
     get '/api/v1/merchants?per_page=50&page=2'
     expect(response).to be_successful
@@ -50,5 +50,19 @@ RSpec.describe 'api/v1/merchants#index' do
       expectation[:attributes][:name].class == String
     end
     expect(expectations).to be true
+  end
+
+  it 'returns an empty array if requested page is out of range' do
+    create_list(:merchant, 30)
+
+    get '/api/v1/merchants?page=200'
+
+    expect(response).to be_successful
+
+    json_response = JSON.parse(response.body, symbolize_names: true)
+    data_arr = json_response[:data]
+
+    expect(data_arr.class).to eq Array
+    expect(data_arr.length).to eq 0
   end
 end
