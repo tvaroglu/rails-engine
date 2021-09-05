@@ -24,8 +24,10 @@ class JsonSerializer
   end
 
   def self.batch_size(params, table)
-    if params[:per_page].nil? || params[:per_page].to_i > table_length(table) || params[:per_page].to_i <= 0
+    if params[:per_page].nil? || params[:per_page].to_i <= 0
       per_page = 20
+    elsif params[:per_page].to_i >= table_length(table)
+      per_page = table_length(table) 
     else
       per_page = params[:per_page].to_i
     end

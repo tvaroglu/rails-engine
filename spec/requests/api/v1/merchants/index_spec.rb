@@ -52,17 +52,33 @@ RSpec.describe 'api/v1/merchants#index' do
     expect(expectations).to be true
   end
 
-  it 'returns an empty array if requested page is out of range' do
-    create_list(:merchant, 30)
+  describe 'edge cases' do
+    it 'returns an empty array if requested page is out of range' do
+      create_list(:merchant, 30)
 
-    get '/api/v1/merchants?page=200'
+      get '/api/v1/merchants?page=200'
 
-    expect(response).to be_successful
+      expect(response).to be_successful
 
-    json_response = JSON.parse(response.body, symbolize_names: true)
-    data_arr = json_response[:data]
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      data_arr = json_response[:data]
 
-    expect(data_arr.class).to eq Array
-    expect(data_arr.length).to eq 0
+      expect(data_arr.class).to eq Array
+      expect(data_arr.length).to eq 0
+    end
+
+    it 'returns the entire table if the batch size exceeds table length' do
+      create_list(:merchant, 30)
+
+      get '/api/v1/merchants?per_page=200'
+
+      expect(response).to be_successful
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      data_arr = json_response[:data]
+
+      expect(data_arr.class).to eq Array
+      expect(data_arr.length).to eq 30
+    end
   end
 end
