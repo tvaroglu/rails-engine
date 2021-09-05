@@ -44,7 +44,7 @@ class JsonSerializer
   def self.format_all(records)
     records.map do |record|
       {
-        id: record.id,
+        id: record.id.to_s,
         type: record.class.to_s.downcase,
         attributes: record.attributes.except('id', 'created_at', 'updated_at')
       }

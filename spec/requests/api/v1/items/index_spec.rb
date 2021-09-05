@@ -15,12 +15,12 @@ RSpec.describe 'api/v1/items#index' do
 
     expect(data_arr.class).to eq Array
     expect(data_arr.length).to eq 50
-    expect(data_arr.first[:id]).to eq 51
-    expect(data_arr.last[:id]).to eq 100
+    expect(data_arr.first[:id]).to eq '51'
+    expect(data_arr.last[:id]).to eq '100'
 
     expectations = data_arr.all? do |expectation|
       expectation.class == Hash
-      expectation[:id].class == Integer
+      expectation[:id].class == String
       expectation[:type] == 'item'
       expectation[:attributes].class == Hash
       expectation[:attributes].keys.length == 3
@@ -45,7 +45,7 @@ RSpec.describe 'api/v1/items#index' do
 
     expectations = data_arr.all? do |expectation|
       expectation.class == Hash
-      expectation[:id].class == Integer
+      expectation[:id].class == String
       expectation[:type] == 'item'
       expectation[:attributes].class == Hash
       expectation[:attributes].keys.length == 3
