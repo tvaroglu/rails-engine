@@ -10,7 +10,7 @@ class ItemSerializer < JsonSerializer
 
   def self.reformat_response(output_hash)
     if !output_hash[:data].first.nil?
-      output_hash[:data].first[:attributes] = output_hash[:data].first[:attributes].except('merchant_id')
+      # output_hash[:data].first[:attributes] = output_hash[:data].first[:attributes].except('merchant_id')
       output_hash[:data] = output_hash[:data].first
     else
       output_hash[:data] = item_shell
@@ -25,7 +25,8 @@ class ItemSerializer < JsonSerializer
       attributes: {
         Item.attribute_names[1] => nil,
         Item.attribute_names[2] => nil,
-        Item.attribute_names[3] => nil
+        Item.attribute_names[3] => nil,
+        Item.attribute_names[4] => nil
         }
       }
   end
