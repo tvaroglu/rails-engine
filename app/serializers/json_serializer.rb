@@ -58,4 +58,14 @@ class JsonSerializer
       }
     end
   end
+
+  def self.reformat(output_hash)
+    output_hash[:data] = output_hash[:data].first
+    output_hash
+  end
+
+  def self.query(table, record_id)
+    result = table.where(id: record_id)
+    reformat(output_hash(result))
+  end
 end
