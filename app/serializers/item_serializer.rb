@@ -10,7 +10,7 @@ class ItemSerializer < JsonSerializer
   def self.item_shell
     {
       data: {
-        id: nil,
+        Item.attribute_names[0] => nil,
         type: 'item',
         attributes: {
           Item.attribute_names[1] => nil,

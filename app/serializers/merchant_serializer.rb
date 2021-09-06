@@ -10,7 +10,7 @@ class MerchantSerializer < JsonSerializer
   def self.merchant_shell
     {
       data: {
-        id: nil,
+        Merchant.attribute_names[0] => nil,
         type: 'merchant',
         attributes: {
           Merchant.attribute_names[1] => nil
