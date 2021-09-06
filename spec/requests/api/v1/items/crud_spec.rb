@@ -131,7 +131,7 @@ RSpec.describe 'api/v1/items resources::CRUD' do
 
       item = Item.find_by(id: id)
       expect(response).to be_successful
-      
+
       expect(item.name).to_not eq(previous_name)
       expect(item.description).to_not eq(previous_description)
       expect(item.unit_price).to_not eq(previous_unit_price)
@@ -189,6 +189,76 @@ RSpec.describe 'api/v1/items resources::CRUD' do
         data_hash[:attributes][:description].class == String
         data_hash[:attributes][:unit_price].class == Float
         data_hash[:attributes][:merchant_id].class == Integer
+      end
+      expect(expectations).to be true
+    end
+  end
+
+  describe 'items#update: sad path' do
+    it "can't update an item with an unfound item id" do
+      merchant = create(:merchant, id: 1)
+      id = create(:item, merchant_id: merchant.id).id
+
+      item_params = {
+        name: 'A new name',
+        description: 'A new description',
+        unit_price: 12.34,
+        merchant_id: merchant.id
+      }
+
+      headers = {'CONTENT_TYPE' => 'application/json'}
+      put "/api/v1/items/#{12345}", headers: headers, params: JSON.generate({item: item_params})
+
+      expect(response.status).to eq 404
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response.class).to eq Hash
+
+      data_hash = json_response[:data]
+      expectations = data_hash.all? do |expectation|
+        data_hash.class == Hash
+        data_hash.keys.length == 3
+        data_hash[:id].class == nil
+        data_hash[:type] == 'item'
+        data_hash[:attributes].class == Hash
+        data_hash[:attributes].keys.length == 4
+        data_hash[:attributes][:name].class == NilClass
+        data_hash[:attributes][:description].class == NilClass
+        data_hash[:attributes][:unit_price].class == NilClass
+        data_hash[:attributes][:merchant_id].class == NilClass
+      end
+      expect(expectations).to be true
+    end
+
+    it "can't update an item with an unfound merchant_id" do
+      id = create(:item).id
+
+      item_params = {
+        name: 'A new name',
+        description: 'A new description',
+        unit_price: 12.34
+      }
+
+      headers = {'CONTENT_TYPE' => 'application/json'}
+      patch "/api/v1/items/#{id}", headers: headers, params: JSON.generate({item: item_params, merchant_id: nil})
+
+      expect(response.status).to eq 404
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response.class).to eq Hash
+
+      data_hash = json_response[:data]
+      expectations = data_hash.all? do |expectation|
+        data_hash.class == Hash
+        data_hash.keys.length == 3
+        data_hash[:id].class == nil
+        data_hash[:type] == 'item'
+        data_hash[:attributes].class == Hash
+        data_hash[:attributes].keys.length == 4
+        data_hash[:attributes][:name].class == NilClass
+        data_hash[:attributes][:description].class == NilClass
+        data_hash[:attributes][:unit_price].class == NilClass
+        data_hash[:attributes][:merchant_id].class == NilClass
       end
       expect(expectations).to be true
     end

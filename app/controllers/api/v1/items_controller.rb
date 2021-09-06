@@ -21,7 +21,7 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def update
-    if !params[:merchant_id].nil?
+    if !params.keys.index('merchant_id').nil?
       bad_merchant_id = true if Merchant.where(id: params[:merchant_id]).empty?
     end
     if Item.where(id: params[:id]).empty? || params[:id].to_i == 0 || bad_merchant_id
