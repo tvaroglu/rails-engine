@@ -3,7 +3,7 @@ class JsonSerializer
     sanitized_params = sanitize_params(query_params, table)
     ranges = pagination_range(sanitized_params[0], sanitized_params[1])
     if query_params[:page].to_i < (table_length(table) / sanitized_params[1])
-      records = table.all.order(:id).limit(ranges[1])[ranges[0]..ranges[1]]
+      records = table.all.limit(ranges[1])[ranges[0]..ranges[1]]
     else
       records = []
     end
