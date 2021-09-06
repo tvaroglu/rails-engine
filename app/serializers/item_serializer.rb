@@ -7,6 +7,14 @@ class ItemSerializer < JsonSerializer
     query(Item, item_id)
   end
 
+  def self.create(item)
+    reformat(output_hash([item]))
+  end
+
+  def self.params_error
+    { 'error' => 'bad or missing attributes' }
+  end
+
   def self.item_shell
     {
       data: {

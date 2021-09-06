@@ -13,7 +13,6 @@ RSpec.describe 'api/v1/items resources::CRUD' do
       expect(json_response.class).to eq Hash
 
       data_hash = json_response[:data]
-
       expectations = data_hash.all? do |expectation|
         data_hash.class == Hash
         data_hash.keys.length == 3
@@ -37,7 +36,6 @@ RSpec.describe 'api/v1/items resources::CRUD' do
       expect(json_response.class).to eq Hash
 
       data_hash = json_response[:data]
-
       expectations = data_hash.all? do |expectation|
         data_hash.class == Hash
         data_hash.keys.length == 3
@@ -55,16 +53,15 @@ RSpec.describe 'api/v1/items resources::CRUD' do
   end
 
   describe 'items#create and items#destroy' do
-    it 'can create and delete a new item' do
+    it 'can create and delete a new item if valid attributes are provided' do
       id = create(:merchant, id: 1).id
-      item_params = (
-        {
-          name: 'Item1',
-          description: 'A really cool item',
-          unit_price: 49.99,
-          merchant_id: id
-          }
-        )
+      item_params = {
+        name: 'Item1',
+        description: 'A really cool item',
+        unit_price: 49.99,
+        merchant_id: id
+      }
+
       headers = {'CONTENT_TYPE' => 'application/json'}
       post '/api/v1/items', headers: headers, params: JSON.generate(item: item_params)
 
@@ -76,9 +73,39 @@ RSpec.describe 'api/v1/items resources::CRUD' do
       expect(created_item.unit_price).to eq(item_params[:unit_price])
       expect(created_item.merchant_id).to eq(item_params[:merchant_id])
 
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response.class).to eq Hash
+
+      data_hash = json_response[:data]
+      expectations = data_hash.all? do |expectation|
+        data_hash.class == Hash
+        data_hash.keys.length == 3
+        data_hash[:id].class == String
+        data_hash[:type] == 'item'
+        data_hash[:attributes].class == Hash
+        data_hash[:attributes].keys.length == 4
+        data_hash[:attributes][:name].class == String
+        data_hash[:attributes][:description].class == String
+        data_hash[:attributes][:unit_price].class == Float
+        data_hash[:attributes][:merchant_id].class == Integer
+      end
+      expect(expectations).to be true
+
       delete "/api/v1/items/#{created_item.id}"
       expect(response).to be_successful
       expect{Item.find(created_item.id)}.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it 'returns an error if empty params are provided' do
+      item_params = {}
+      headers = {'CONTENT_TYPE' => 'application/json'}
+      post '/api/v1/items', headers: headers, params: JSON.generate(item: item_params)
+
+      expect(response.status).to eq 400
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      expect(json_response.class).to eq Hash
+      expect(json_response[:error]).to eq 'bad or missing attributes'
     end
   end
 

@@ -12,7 +12,12 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def create
-    render json: Item.create(item_params), status: :created
+    begin
+      new_item = Item.create(item_params)
+    rescue ActionController::ParameterMissing
+      render json: ItemSerializer.params_error, status: :bad_request
+    end
+    render json: ItemSerializer.create(new_item), status: :created if new_item
   end
 
   def destroy

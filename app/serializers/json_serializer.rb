@@ -10,11 +10,6 @@ class JsonSerializer
     output_hash(records)
   end
 
-  def self.output_hash(records)
-    records.length.positive? ? hash = { data: format_all(records) } : hash = { data: [] }
-    hash
-  end
-
   def self.sanitize_params(params, table)
     [batch(params), batch_size(params, table)]
   end
@@ -62,6 +57,11 @@ class JsonSerializer
   def self.reformat(output_hash)
     output_hash[:data] = output_hash[:data].first
     output_hash
+  end
+
+  def self.output_hash(records)
+    records.length.positive? ? hash = { data: format_all(records) } : hash = { data: [] }
+    hash
   end
 
   def self.query(table, record_id)
