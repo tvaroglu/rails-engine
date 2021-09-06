@@ -5,7 +5,7 @@ class Api::V1::ItemsController < ApplicationController
 
   def show
     if Item.where(id: params[:id]).empty?
-      render json: ItemSerializer.item_shell, :status => :not_found
+      render json: ItemSerializer.item_shell, status: :not_found
     else
       render json: ItemSerializer.find(params[:id])
     end
