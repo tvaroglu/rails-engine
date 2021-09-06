@@ -54,4 +54,32 @@ RSpec.describe 'api/v1/items resources::CRUD' do
     end
   end
 
+  describe 'items#create and items#destroy' do
+    it 'can create and delete a new item' do
+      id = create(:merchant, id: 1).id
+      item_params = (
+        {
+          name: 'Item1',
+          description: 'A really cool item',
+          unit_price: 49.99,
+          merchant_id: id
+          }
+        )
+      headers = {'CONTENT_TYPE' => 'application/json'}
+      post '/api/v1/items', headers: headers, params: JSON.generate(item: item_params)
+
+      created_item = Item.last
+
+      expect(response).to be_successful
+      expect(created_item.name).to eq(item_params[:name])
+      expect(created_item.description).to eq(item_params[:description])
+      expect(created_item.unit_price).to eq(item_params[:unit_price])
+      expect(created_item.merchant_id).to eq(item_params[:merchant_id])
+
+      delete "/api/v1/items/#{created_item.id}"
+      expect(response).to be_successful
+      expect{Item.find(created_item.id)}.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
 end
