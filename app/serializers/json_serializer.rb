@@ -3,16 +3,11 @@ class JsonSerializer
     sanitized_params = sanitize_params(query_params, table)
     ranges = pagination_range(sanitized_params[0], sanitized_params[1])
     if query_params[:page].to_i < (table_length(table) / sanitized_params[1])
-      records = table.all.order(:id).limit(ranges[1])[ranges[0]..ranges[1]]
+      records = table.all.limit(ranges[1])[ranges[0]..ranges[1]]
     else
       records = []
     end
     output_hash(records)
-  end
-
-  def self.output_hash(records)
-    records.length.positive? ? hash = { data: format_all(records) } : hash = { data: [] }
-    hash
   end
 
   def self.sanitize_params(params, table)
@@ -62,6 +57,11 @@ class JsonSerializer
   def self.reformat(output_hash)
     output_hash[:data] = output_hash[:data].first
     output_hash
+  end
+
+  def self.output_hash(records)
+    records.length.positive? ? hash = { data: format_all(records) } : hash = { data: [] }
+    hash
   end
 
   def self.query(table, record_id)

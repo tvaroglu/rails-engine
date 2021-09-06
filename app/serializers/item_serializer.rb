@@ -7,10 +7,24 @@ class ItemSerializer < JsonSerializer
     query(Item, item_id)
   end
 
+  def self.create_record(item)
+    reformat(output_hash([item]))
+  end
+
+  def self.update_record(params, item_params)
+    found_item = Item.find(params[:id])
+    found_item.update(item_params) if found_item
+    reformat(output_hash([found_item]))
+  end
+
+  def self.params_error
+    { 'error' => 'bad or missing attributes' }
+  end
+
   def self.item_shell
     {
       data: {
-        id: nil,
+        Item.attribute_names[0] => nil,
         type: 'item',
         attributes: {
           Item.attribute_names[1] => nil,
