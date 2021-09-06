@@ -11,12 +11,12 @@ class JsonSerializer
   end
 
   def self.output_hash(records)
-    records.length > 0 ? hash = { data: format_all(records) } : hash = { data: [] }
+    records.length.positive? ? hash = { data: format_all(records) } : hash = { data: [] }
     hash
   end
 
   def self.sanitize_params(params, table)
-    [batch(params, table), batch_size(params, table)]
+    [batch(params), batch_size(params, table)]
   end
 
   def self.table_length(table)
@@ -27,16 +27,15 @@ class JsonSerializer
     if params[:per_page].nil? || params[:per_page].to_i <= 0
       per_page = 20
     elsif params[:per_page].to_i >= table_length(table)
-      per_page = table_length(table) 
+      per_page = table_length(table)
     else
       per_page = params[:per_page].to_i
     end
     per_page
   end
 
-  def self.batch(params, table)
-    per_page = batch_size(params, table)
-    if params[:page].nil? || params[:page].to_i <= 0 #|| (per_page * params[:page].to_i) > table_length(table)
+  def self.batch(params)
+    if params[:page].nil? || params[:page].to_i <= 0
       page = 1
     else
       page = params[:page].to_i
@@ -58,5 +57,15 @@ class JsonSerializer
         attributes: record.attributes.except('id', 'created_at', 'updated_at')
       }
     end
+  end
+
+  def self.reformat(output_hash)
+    output_hash[:data] = output_hash[:data].first
+    output_hash
+  end
+
+  def self.query(table, record_id)
+    result = table.where(id: record_id)
+    reformat(output_hash(result))
   end
 end

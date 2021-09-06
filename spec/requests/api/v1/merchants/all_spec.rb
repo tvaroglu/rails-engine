@@ -57,7 +57,6 @@ RSpec.describe 'api/v1/merchants#index' do
       create_list(:merchant, 30)
 
       get '/api/v1/merchants?page=200'
-
       expect(response).to be_successful
 
       json_response = JSON.parse(response.body, symbolize_names: true)
@@ -71,7 +70,6 @@ RSpec.describe 'api/v1/merchants#index' do
       create_list(:merchant, 30)
 
       get '/api/v1/merchants?per_page=200'
-
       expect(response).to be_successful
 
       json_response = JSON.parse(response.body, symbolize_names: true)
