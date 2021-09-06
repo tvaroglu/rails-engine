@@ -79,4 +79,5 @@ RSpec.describe 'api/v1/merchants#index' do
       expect(data_arr.length).to eq 30
     end
   end
+
 end
