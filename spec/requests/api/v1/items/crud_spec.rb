@@ -92,7 +92,8 @@ RSpec.describe 'api/v1/items resources::CRUD' do
       expect(expectations).to be true
 
       delete "/api/v1/items/#{created_item.id}"
-      expect(response).to be_successful
+
+      expect(response.status).to eq 204
       expect{Item.find(created_item.id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
 
