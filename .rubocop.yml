@@ -42,3 +42,6 @@ Metrics/MethodLength:
 
 Rails/UniqueValidationWithoutIndex:
   Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false

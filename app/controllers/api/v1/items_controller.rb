@@ -35,6 +35,10 @@ class Api::V1::ItemsController < ApplicationController
     render json: Item.delete(params[:id]), status: :no_content
   end
 
+  def find_all
+    render json: ItemSerializer.item_shell, status: :not_found
+  end
+
   private
 
   def item_params
