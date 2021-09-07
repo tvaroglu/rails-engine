@@ -17,7 +17,7 @@ class Api::V1::ItemsController < ApplicationController
     rescue ActionController::ParameterMissing
       render json: ItemSerializer.params_error, status: :bad_request
     end
-    render json: ItemSerializer.create_record(new_item), status: :created if new_item
+    render json: ItemSerializer.create(new_item), status: :created if new_item
   end
 
   def update
@@ -27,7 +27,7 @@ class Api::V1::ItemsController < ApplicationController
     if Item.where(id: params[:id]).empty? || params[:id].to_i.zero? || bad_merchant_id
       render json: ItemSerializer.item_shell, status: :not_found
     else
-      render json: ItemSerializer.update_record(params, item_params), status: :accepted
+      render json: ItemSerializer.update(params, item_params), status: :accepted
     end
   end
 
