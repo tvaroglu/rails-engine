@@ -18,15 +18,14 @@ RSpec.describe 'api/v1/merchants#index' do
     expect(data_arr.first[:id]).to eq '51'
     expect(data_arr.last[:id]).to eq '100'
 
-    expectations = data_arr.all? do |expectation|
-      expectation.class == Hash
-      expectation[:id].class == String
-      expectation[:type] == 'merchant'
-      expectation[:attributes].class == Hash
-      expectation[:attributes].keys.length == 1
-      expectation[:attributes][:name].class == String
+    data_arr.each do |record|
+      expect(record.class).to eq Hash
+      expect(record[:id].class).to eq String
+      expect(record[:type]).to eq 'merchant'
+      expect(record[:attributes].class).to eq Hash
+      expect(record[:attributes].keys.length).to eq 1
+      expect(record[:attributes][:name].class).to eq String
     end
-    expect(expectations).to be true
   end
 
   it 'returns the first 20 merchants by default' do
@@ -41,15 +40,14 @@ RSpec.describe 'api/v1/merchants#index' do
     expect(data_arr.class).to eq Array
     expect(data_arr.length).to eq 20
 
-    expectations = data_arr.all? do |expectation|
-      expectation.class == Hash
-      expectation[:id].class == String
-      expectation[:type] == 'merchant'
-      expectation[:attributes].class == Hash
-      expectation[:attributes].keys.length == 1
-      expectation[:attributes][:name].class == String
+    data_arr.each do |record|
+      expect(record.class).to eq Hash
+      expect(record[:id].class).to eq String
+      expect(record[:type]).to eq 'merchant'
+      expect(record[:attributes].class).to eq Hash
+      expect(record[:attributes].keys.length).to eq 1
+      expect(record[:attributes][:name].class).to eq String
     end
-    expect(expectations).to be true
   end
 
   describe 'edge cases' do

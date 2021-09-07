@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'api/v1/merchants#show' do
-
   it 'can find a single merchant' do
     id = create(:merchant).id
 
@@ -13,16 +12,13 @@ RSpec.describe 'api/v1/merchants#show' do
 
     data_hash = json_response[:data]
 
-    expectations = data_hash.all? do |expectation|
-      data_hash.class == Hash
-      data_hash.keys.length == 3
-      data_hash[:id].class == String
-      data_hash[:type] == 'merchant'
-      data_hash[:attributes].class == Hash
-      data_hash[:attributes].keys.length == 4
-      data_hash[:attributes][:name].class == String
-    end
-    expect(expectations).to be true
+    expect(data_hash.class).to eq Hash
+    expect(data_hash.keys.length).to eq 3
+    expect(data_hash[:id].class).to eq String
+    expect(data_hash[:type]).to eq 'merchant'
+    expect(data_hash[:attributes].class).to eq Hash
+    expect(data_hash[:attributes].keys.length).to eq 1
+    expect(data_hash[:attributes][:name].class).to eq String
   end
 
   it 'can return a 404 error if the merchant is not found' do
@@ -34,16 +30,12 @@ RSpec.describe 'api/v1/merchants#show' do
 
     data_hash = json_response[:data]
 
-    expectations = data_hash.all? do |expectation|
-      data_hash.class == Hash
-      data_hash.keys.length == 3
-      data_hash[:id].class == nil
-      data_hash[:type] == 'item'
-      data_hash[:attributes].class == Hash
-      data_hash[:attributes].keys.length == 4
-      data_hash[:attributes][:name].class == NilClass
-    end
-    expect(expectations).to be true
+    expect(data_hash.class).to eq Hash
+    expect(data_hash.keys.length).to eq 3
+    expect(data_hash[:id].class).to eq NilClass
+    expect(data_hash[:type]).to eq 'merchant'
+    expect(data_hash[:attributes].class).to eq Hash
+    expect(data_hash[:attributes].keys.length).to eq 1
+    expect(data_hash[:attributes][:name].class).to eq NilClass
   end
-
 end
