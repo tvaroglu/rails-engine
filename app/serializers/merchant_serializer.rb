@@ -7,6 +7,10 @@ class MerchantSerializer < JsonSerializer
     query(Merchant, merchant_id)
   end
 
+  def self.items(merchant_id)
+    output_hash(Item.where(merchant_id: merchant_id))
+  end
+
   def self.merchant_shell
     {
       data: {

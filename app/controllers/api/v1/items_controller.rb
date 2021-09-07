@@ -24,7 +24,7 @@ class Api::V1::ItemsController < ApplicationController
     if !params.keys.index('merchant_id').nil?
       bad_merchant_id = true if Merchant.where(id: params[:merchant_id]).empty?
     end
-    if Item.where(id: params[:id]).empty? || params[:id].to_i == 0 || bad_merchant_id
+    if Item.where(id: params[:id]).empty? || params[:id].to_i.zero? || bad_merchant_id
       render json: ItemSerializer.item_shell, status: :not_found
     else
       render json: ItemSerializer.update_record(params, item_params), status: :accepted
@@ -32,7 +32,7 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def destroy
-    render json: Item.delete(params[:id])
+    render json: Item.delete(params[:id]), status: :no_content
   end
 
   private

@@ -17,6 +17,11 @@ class ItemSerializer < JsonSerializer
     reformat(output_hash([found_item]))
   end
 
+  def self.merchant(item_id)
+    found_merchant = Merchant.where(id: Item.find(item_id).merchant_id)
+    reformat(output_hash(found_merchant))
+  end
+
   def self.params_error
     { 'error' => 'bad or missing attributes' }
   end
