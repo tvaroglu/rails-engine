@@ -15,7 +15,7 @@ class Api::V1::ItemsController < ApplicationController
     begin
       new_item = Item.create(item_params)
     rescue ActionController::ParameterMissing
-      render json: ItemSerializer.params_error, status: :bad_request
+      render json: JsonSerializer.params_error, status: :bad_request
     end
     render json: ItemSerializer.find(new_item.id), status: :created if new_item
   end
@@ -37,7 +37,9 @@ class Api::V1::ItemsController < ApplicationController
 
   def find_all
     search_results = ApplicationRecord.search(Item, params[:name]) if !params[:name].nil?
-    if search_results.blank? || search_results.empty?
+    if search_results.nil? || params[:name] == ''
+      render json: JsonSerializer.params_error, status: :bad_request
+    elsif search_results.empty?
       render json: ItemSerializer.output_hash([])
     else
       render json: ItemSerializer.output_hash(search_results)

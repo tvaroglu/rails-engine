@@ -19,10 +19,6 @@ class ItemSerializer < JsonSerializer
       reformat(output_hash(found_merchant))
     end
 
-    def params_error
-      { 'error' => 'bad or missing attributes' }
-    end
-
     def item_shell
       {
         data: {

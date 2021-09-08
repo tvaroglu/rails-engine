@@ -69,5 +69,9 @@ class JsonSerializer
       result = table.where(id: record_id)
       reformat(output_hash(result))
     end
+
+    def params_error
+      { 'error' => 'bad or missing parameters' }
+    end
   end
 end
