@@ -12,8 +12,8 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def find
-    search_results = ApplicationRecord.search(Merchant, params[:name])
-    if search_results.empty?
+    search_results = ApplicationRecord.search(Merchant, params[:name]) if !params[:name].nil?
+    if search_results.blank? || search_results.empty?
       render json: MerchantSerializer.merchant_shell, status: :not_found
     else
       render json: MerchantSerializer.find(search_results.first.id)

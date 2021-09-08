@@ -2,21 +2,21 @@ class JsonSerializer
   class << self
     def render_all(query_params, table)
       sanitized_params = sanitize_params(query_params, table)
-      ranges = pagination_range(sanitized_params[0], sanitized_params[1])
-      if query_params[:page].to_i < (table_length(table) / sanitized_params[1])
-        records = table.all.limit(ranges[1])[ranges[0]..ranges[1]]
+      ranges = pagination_range(sanitized_params[:batch], sanitized_params[:batch_size])
+      if query_params[:page].to_i < (table_length(table) / sanitized_params[:batch_size])
+        records = table.all.limit(ranges[:end])[ranges[:start]..ranges[:end]]
       else
         records = []
       end
       output_hash(records)
     end
 
-    def sanitize_params(params, table)
-      [batch(params), batch_size(params, table)]
-    end
-
     def table_length(table)
       table.all.length
+    end
+
+    def sanitize_params(params, table)
+      { batch: batch(params), batch_size: batch_size(params, table) }
     end
 
     def batch_size(params, table)
@@ -42,7 +42,7 @@ class JsonSerializer
     def pagination_range(page, per_page)
       range_end = page * per_page
       range_start = (range_end / page) * (page - 1)
-      [range_start, range_end]
+      { start: range_start, end: range_end }
     end
 
     def format_all(records)
