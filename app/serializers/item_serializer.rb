@@ -8,10 +8,6 @@ class ItemSerializer < JsonSerializer
       query(Item, item_id)
     end
 
-    def create(item)
-      reformat(output_hash([item]))
-    end
-
     def update(params, item_params)
       found_item = Item.find(params[:id])
       found_item.update(item_params) if found_item

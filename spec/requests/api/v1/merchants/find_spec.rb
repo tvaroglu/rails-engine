@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'api/v1/merchants#find' do
-  it 'can find a single merchant via case sensitive search' do
+  it 'can find a single merchant via case insensitive search' do
     merchant_1 = create(:merchant, name: 'Cool merchant')
     merchant_2 = create(:merchant, name: 'cool merchant')
 
@@ -24,7 +24,7 @@ RSpec.describe 'api/v1/merchants#find' do
 
   it 'can return a 404 error if the merchant is not found' do
     get "/api/v1/merchants/find?name=#{'fdsfsdfdsdfdsfsdf'}"
-    expect(response.status).to eq 404
+    expect(response).to be_successful
 
     json_response = JSON.parse(response.body, symbolize_names: true)
     expect(json_response.class).to eq Hash
