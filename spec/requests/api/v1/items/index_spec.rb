@@ -2,22 +2,17 @@ require 'rails_helper'
 
 RSpec.describe 'api/v1/items#index' do
   describe 'happy path' do
-    it 'allows for optional query params to customize formatted payload' do
-      # This should fetch items 51 through 100,
-        # since we’re returning 50 per “page”,
-        # and we want “page 2” of data:
-      create_list(:item, 150)
+    it 'returns the first 20 items by default' do
+      create_list(:item, 30)
 
-      get '/api/v1/items?per_page=50&page=2'
+      get '/api/v1/items'
       expect(response).to be_successful
 
       json_response = JSON.parse(response.body, symbolize_names: true)
       data_arr = json_response[:data]
 
       expect(data_arr.class).to eq Array
-      expect(data_arr.length).to eq 50
-      expect(data_arr.first[:id]).to eq '51'
-      expect(data_arr.last[:id]).to eq '100'
+      expect(data_arr.length).to eq 20
 
       data_arr.each do |record|
         expect(record.class).to eq Hash
@@ -31,17 +26,26 @@ RSpec.describe 'api/v1/items#index' do
       end
     end
 
-    it 'returns the first 20 items by default' do
-      create_list(:item, 30)
+    it 'allows for optional query params to customize formatted payload' do
+      # This should fetch items 51 through 100,
+        # since we’re returning 50 per “page”,
+        # and we want “page 2” of data:
+      create_list(:item, 50)
+      create(:item, name: 'Item#51')
+      create_list(:item, 48)
+      create(:item, name: 'Item#100')
+      create_list(:item, 50)
 
-      get '/api/v1/items'
+      get '/api/v1/items?per_page=50&page=2'
       expect(response).to be_successful
 
       json_response = JSON.parse(response.body, symbolize_names: true)
       data_arr = json_response[:data]
 
       expect(data_arr.class).to eq Array
-      expect(data_arr.length).to eq 20
+      expect(data_arr.length).to eq 50
+      expect(data_arr.first[:attributes][:name]).to eq 'Item#51'
+      expect(data_arr.last[:attributes][:name]).to eq 'Item#100'
 
       data_arr.each do |record|
         expect(record.class).to eq Hash
