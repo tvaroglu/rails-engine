@@ -20,7 +20,8 @@ class MerchantSerializer < JsonSerializer
           attributes: {
             Merchant.attribute_names[1] => nil
           }
-        }
+        },
+        error: params_error['error']
       }
     end
   end
