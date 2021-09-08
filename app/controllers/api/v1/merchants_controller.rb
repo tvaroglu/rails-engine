@@ -21,4 +21,8 @@ class Api::V1::MerchantsController < ApplicationController
       render json: MerchantSerializer.find(search_results.first.id)
     end
   end
+
+  def most_items
+    render json: MerchantSerializer.merchant_shell
+  end
 end
