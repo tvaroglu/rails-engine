@@ -34,6 +34,9 @@ Style/NegatedIf:
 Style/ConditionalAssignment:
   Enabled: false
 
+Style/SoleNestedConditional:
+  Enabled: false
+
 Metrics/AbcSize:
   Enabled: false
 

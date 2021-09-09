@@ -16,8 +16,6 @@ RSpec.describe Merchant do
       expect(search_results.first.name).to eq(merchant_2.name)
     end
 
-    # HINT: Invoices must have a successful transaction
-      # AND be shipped to the customer to be considered as revenue.
     it 'can return x number of merchants ranked by total revenue' do
       query = Merchant.top_x_merchants_by_revenue(5)
 
@@ -27,6 +25,8 @@ RSpec.describe Merchant do
       expect(query[1].revenue).to eq 14
       expect(query[2].name).to eq third_most_profitable_merchant.name
       expect(query[2].revenue).to eq 7
+
+      expect(Merchant.revenue_for_merchant(most_profitable_merchant.id).first.revenue).to eq 21
     end
   end
 end

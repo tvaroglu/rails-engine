@@ -24,7 +24,7 @@ class Api::V1::ItemsController < ApplicationController
     if !params.keys.index('merchant_id').nil?
       bad_merchant_id = true if Merchant.where(id: params[:merchant_id]).empty?
     end
-    if Item.where(id: params[:id]).empty? || params[:id].to_i.zero? || bad_merchant_id
+    if params[:id].to_i <= 0 || Item.where(id: params[:id]).empty? || bad_merchant_id
       render json: ItemSerializer.item_shell, status: :not_found
     else
       render json: ItemSerializer.update(params, item_params), status: :accepted
@@ -39,8 +39,6 @@ class Api::V1::ItemsController < ApplicationController
     search_results = ApplicationRecord.search(Item, params[:name]) if !params[:name].nil?
     if search_results.nil? || params[:name] == ''
       render json: JsonSerializer.params_error, status: :bad_request
-    elsif search_results.empty?
-      render json: ItemSerializer.output_hash([])
     else
       render json: ItemSerializer.output_hash(search_results)
     end
