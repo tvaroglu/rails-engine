@@ -27,7 +27,6 @@ RSpec.describe 'api/v1/merchants#show' do
 
     json_response = JSON.parse(response.body, symbolize_names: true)
     expect(json_response.class).to eq Hash
-    expect(json_response[:error]).to eq JsonSerializer.params_error['error']
 
     data_hash = json_response[:data]
 

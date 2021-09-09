@@ -30,8 +30,7 @@ class ItemSerializer < JsonSerializer
             Item.attribute_names[3] => nil,
             Item.attribute_names[4] => nil
           }
-        },
-        error: params_error['error']
+        }
       }
     end
   end
