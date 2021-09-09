@@ -23,6 +23,11 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def most_items
-    render json: MerchantSerializer.merchant_shell
+    if params[:quantity].to_i <= 0 || params[:quantity].nil?
+      render json: MerchantSerializer.params_error, status: :bad_request
+    else
+      data = Merchant.top_x_merchants_by_items_sold(params[:quantity])
+      render json: MerchantSerializer.top_merchants_by_items_sold(data)
+    end
   end
 end

@@ -22,13 +22,24 @@ class MerchantSerializer < JsonSerializer
       revenue_query
     end
 
-    def top_merchants(results)
+    def top_merchants_by_revenue(results)
       merchant_revenue_keys(output_hash(results))
     end
 
     def merchant_revenue(merchant_id)
       reformatted = reformat(output_hash(Merchant.revenue_for_merchant(merchant_id)))
       merchant_revenue_keys(reformatted)
+    end
+
+    def merchant_item_keys(item_query)
+      item_query[:data] = item_query[:data].map do |response_obj|
+        response_obj.deep_transform_keys { |key| key.to_s.delete('_') }
+      end
+      item_query
+    end
+
+    def top_merchants_by_items_sold(results)
+      merchant_item_keys(output_hash(results))
     end
 
     def merchant_shell

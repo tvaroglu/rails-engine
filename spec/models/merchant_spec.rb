@@ -28,5 +28,16 @@ RSpec.describe Merchant do
 
       expect(Merchant.revenue_for_merchant(most_profitable_merchant.id).first.revenue).to eq 21
     end
+
+    it 'can return x number of merchants ranked by items sold' do
+      query = Merchant.top_x_merchants_by_items_sold(5)
+
+      expect(query[0].name).to eq most_profitable_merchant.name
+      expect(query[0]._count).to eq 6
+      expect(query[1].name).to eq second_most_profitable_merchant.name
+      expect(query[1]._count).to eq 4
+      expect(query[2].name).to eq third_most_profitable_merchant.name
+      expect(query[2]._count).to eq 2
+    end
   end
 end

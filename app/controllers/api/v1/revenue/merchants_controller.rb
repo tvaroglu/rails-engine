@@ -4,7 +4,7 @@ class Api::V1::Revenue::MerchantsController < ApplicationController
       render json: MerchantSerializer.params_error, status: :bad_request
     else
       data = Merchant.top_x_merchants_by_revenue(params[:quantity])
-      render json: MerchantSerializer.top_merchants(data)
+      render json: MerchantSerializer.top_merchants_by_revenue(data)
     end
   end
 

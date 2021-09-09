@@ -46,6 +46,27 @@ RSpec.describe 'api/v1/revenue/merchants' do
       expect(data_hash[:attributes].keys.length).to eq 1
       expect(data_hash[:attributes][:revenue].class).to eq Float
     end
+
+    it 'can return x number of merchants ranked by total items sold' do
+      get '/api/v1/merchants/most_items?quantity=5'
+      expect(response).to be_successful
+
+      json_response = JSON.parse(response.body, symbolize_names: true)
+      data_arr = json_response[:data]
+
+      expect(data_arr.class).to eq Array
+      expect(data_arr.length).to eq 3
+
+      data_arr.each do |record|
+        expect(record.class).to eq Hash
+        expect(record[:id].class).to eq String
+        expect(record[:type]).to eq 'merchant'
+        expect(record[:attributes].class).to eq Hash
+        expect(record[:attributes].keys.length).to eq 2
+        expect(record[:attributes][:name].class).to eq String
+        expect(record[:attributes][:count].class).to eq Integer
+      end
+    end
   end
 
   describe 'edge cases' do
@@ -54,7 +75,13 @@ RSpec.describe 'api/v1/revenue/merchants' do
       expect(response.status).to eq 400
 
       json_response = JSON.parse(response.body)
+      expect(json_response).to eq JsonSerializer.params_error
 
+
+      get '/api/v1/merchants/most_items?quantity='
+      expect(response.status).to eq 400
+
+      json_response = JSON.parse(response.body)
       expect(json_response).to eq JsonSerializer.params_error
     end
 
@@ -63,16 +90,28 @@ RSpec.describe 'api/v1/revenue/merchants' do
       expect(response.status).to eq 400
 
       json_response = JSON.parse(response.body)
+      expect(json_response).to eq JsonSerializer.params_error
 
+
+      get '/api/v1/merchants/most_items?quantity=dsfdsfsdfsdfdsfs'
+      expect(response.status).to eq 400
+
+      json_response = JSON.parse(response.body)
       expect(json_response).to eq JsonSerializer.params_error
     end
 
     it 'can return a 400 if the quantity param is missing from the request' do
-      get '/api/v1/revenue/merchants?quantity'
+      get '/api/v1/revenue/merchants'
       expect(response.status).to eq 400
 
       json_response = JSON.parse(response.body)
+      expect(json_response).to eq JsonSerializer.params_error
 
+
+      get '/api/v1/merchants/most_items'
+      expect(response.status).to eq 400
+
+      json_response = JSON.parse(response.body)
       expect(json_response).to eq JsonSerializer.params_error
     end
 
