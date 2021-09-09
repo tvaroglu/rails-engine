@@ -17,7 +17,7 @@ Find the project spec [here](https://backend.turing.edu/module3/projects/rails_e
 - [Overview](#overview)
 - [Tools Utilized](#framework)
 - [Contributors](#contributors)
-- [Deployed Endpoints](#endpoints)
+- [Deployed Endpoints](#deployed-endpoints)
 - [Project Configurations](#setup)
 
 
@@ -33,12 +33,12 @@ Learning goals and areas of focus consisted of:
 
 - Exposing a RESTful JSON API
 - Using serializers to format JSON responses
-- Testing API exposure
+- Testing API exposure, including edge case coverage and error handling
 - Writing SQL statements without the assistance of an ORM
 
 [Technical Requirements](https://backend.turing.edu/module3/projects/rails_engine/requirements)
 
-#### Framework
+#### <ins>Framework</ins>
 <p>
   <img src="https://img.shields.io/badge/Ruby%20On%20Rails-b81818.svg?&style=flat&logo=rubyonrails&logoColor=white" />
 </p>
@@ -98,27 +98,43 @@ Learning goals and areas of focus consisted of:
 [issues-shield]: https://img.shields.io/github/issues/tvaroglu/rails-engine.svg?style=flat
 [issues-url]: https://github.com/tvaroglu/rails-engine/issues
 
-## Deployed Endpoints
-All `GET` requests are currently deployed to Heroku:
-</br>
-* GET `/api/v1/merchants`
+## <ins>Deployed Endpoints</ins>
+GET `/api/v1/merchants`
   * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/merchants" target="_blank">All Merchants</a>
+    * Optional `query params` for pagination:
+        * `?per_page=<integer>`
+        * `?page=<integer>`
   * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/merchants/1" target="_blank">Find a Merchant by id</a>
   * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/merchants/find?name=ill" target="_blank">Find a Merchant by Name</a>
+    * REQUIRED `query params` for search:
+        * `?name=<string>`
   * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/merchants/1/items" target="_blank">Find a Merchant's Items</a>
   * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/merchants/most_items?quantity=8" target="_blank">Merchants Ranked by Items Sold</a>
-* GET `/api/v1/items`
+    * REQUIRED `query params` for search:
+        * `?quantity=<integer>`
+
+GET `/api/v1/items`
   * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/items" target="_blank">All Items</a>
+    * Optional `query params` for pagination:
+        * `?per_page=<integer>`
+        * `?page=<integer>`
   * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/items/1" target="_blank">Find an Item by id</a>
   * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/items/find_all?name=haru" target="_blank">Find Items by Name</a>
+    * REQUIRED `query params` for search:
+        * `?name=<string>`
   * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/items/1/merchant" target="_blank">Find an Item's Merchant</a>
-* GET `/api/v1/revenue`
+
+GET `/api/v1/revenue`
   * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/revenue/merchants?quantity=10" target="_blank">Merchants Ranked by Revenue</a>
+    * REQUIRED `query params` for search:
+        * `?quantity=<integer>`
   * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/revenue/merchants/1" target="_blank">Revenue for a Merchant</a>
   * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/revenue/items" target="_blank">Items Ranked by Revenue</a>
+    * Optional `query params` for search:
+        * `?quantity=<integer>`
 
 
-## Setup
+## <ins>Setup</ins>
 
 This project requires Ruby 2.7.2.
 
