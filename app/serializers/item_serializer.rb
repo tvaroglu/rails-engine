@@ -19,6 +19,15 @@ class ItemSerializer < JsonSerializer
       reformat(output_hash(found_merchant))
     end
 
+    def item_revenue_keys(revenue_query)
+      revenue_query[:data].each { |response_obj| response_obj[:type] = 'item_revenue' }
+      revenue_query
+    end
+
+    def top_items_by_revenue(results)
+      item_revenue_keys(output_hash(results))
+    end
+
     def item_shell
       {
         data: {
@@ -30,8 +39,7 @@ class ItemSerializer < JsonSerializer
             Item.attribute_names[3] => nil,
             Item.attribute_names[4] => nil
           }
-        },
-        error: params_error['error']
+        }
       }
     end
   end

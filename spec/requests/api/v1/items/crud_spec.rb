@@ -1,9 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe 'api/v1/items resources::CRUD' do
+
+  let!(:merchant) { create(:merchant) }
+
   describe 'items#show' do
     it 'can find a single item' do
-      merchant = create(:merchant, id: 1)
       id = create(:item, merchant_id: merchant.id).id
 
       get "/api/v1/items/#{id}"
@@ -50,12 +52,11 @@ RSpec.describe 'api/v1/items resources::CRUD' do
 
   describe 'items#create and items#destroy' do
     it 'can create and delete a new item if valid attributes are provided' do
-      id = create(:merchant, id: 1).id
       item_params = {
         name: 'Item1',
         description: 'A really cool item',
         unit_price: 49.99,
-        merchant_id: id
+        merchant_id: merchant.id
       }
 
       headers = {'CONTENT_TYPE' => 'application/json'}
@@ -101,13 +102,12 @@ RSpec.describe 'api/v1/items resources::CRUD' do
       json_response = JSON.parse(response.body, symbolize_names: true)
 
       expect(json_response.class).to eq Hash
-      expect(json_response[:error]).to eq 'bad or missing parameters'
+      expect(json_response[:error]).to eq JsonSerializer.params_error['error']
     end
   end
 
   describe 'items#update: happy path' do
     it 'can update an item with all params' do
-      merchant = create(:merchant, id: 1)
       id = create(:item, merchant_id: merchant.id).id
 
       previous_name = Item.last.name
@@ -152,7 +152,6 @@ RSpec.describe 'api/v1/items resources::CRUD' do
     end
 
     it 'can update an item with partial params' do
-      merchant = create(:merchant, id: 1)
       id = create(:item, merchant_id: merchant.id).id
 
       previous_name = Item.last.name
@@ -187,7 +186,6 @@ RSpec.describe 'api/v1/items resources::CRUD' do
 
   describe 'items#update: sad path' do
     it "can't update an item with an unfound item id" do
-      merchant = create(:merchant, id: 1)
       id = create(:item, merchant_id: merchant.id).id
 
       item_params = {
@@ -198,7 +196,7 @@ RSpec.describe 'api/v1/items resources::CRUD' do
       }
 
       headers = {'CONTENT_TYPE' => 'application/json'}
-      put "/api/v1/items/#{12345}", headers: headers, params: JSON.generate({item: item_params})
+      put "/api/v1/items/#{12345}", headers: headers, params: JSON.generate({ item: item_params })
 
       expect(response.status).to eq 404
 

@@ -12,6 +12,36 @@ class MerchantSerializer < JsonSerializer
       output_hash(Item.where(merchant_id: merchant_id))
     end
 
+    def merchant_revenue_keys(revenue_query)
+      if revenue_query[:data].instance_of?(Array)
+        revenue_query[:data].each { |response_obj| response_obj[:type] = 'merchant_name_revenue' }
+      else
+        revenue_query[:data][:type] = 'merchant_revenue'
+        revenue_query[:data][:attributes] = revenue_query[:data][:attributes].except('name')
+      end
+      revenue_query
+    end
+
+    def top_merchants_by_revenue(results)
+      merchant_revenue_keys(output_hash(results))
+    end
+
+    def merchant_revenue(merchant_id)
+      reformatted = reformat(output_hash(Merchant.revenue_for_merchant(merchant_id)))
+      merchant_revenue_keys(reformatted)
+    end
+
+    def merchant_item_keys(item_query)
+      item_query[:data] = item_query[:data].map do |response_obj|
+        response_obj.deep_transform_keys { |key| key.to_s.delete('_') }
+      end
+      item_query
+    end
+
+    def top_merchants_by_items_sold(results)
+      merchant_item_keys(output_hash(results))
+    end
+
     def merchant_shell
       {
         data: {
@@ -20,8 +50,7 @@ class MerchantSerializer < JsonSerializer
           attributes: {
             Merchant.attribute_names[1] => nil
           }
-        },
-        error: params_error['error']
+        }
       }
     end
   end

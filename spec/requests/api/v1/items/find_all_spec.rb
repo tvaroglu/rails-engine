@@ -26,6 +26,7 @@ RSpec.describe 'api/v1/items#find_all' do
         expect(record[:attributes][:name].class).to eq String
         expect(record[:attributes][:description].class).to eq String
         expect(record[:attributes][:unit_price].class).to eq Float
+        expect(record[:attributes][:merchant_id].class).to eq Integer
       end
     end
 
