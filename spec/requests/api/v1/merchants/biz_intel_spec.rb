@@ -85,7 +85,7 @@ RSpec.describe 'api/v1/revenue/merchants' do
       expect(json_response).to eq JsonSerializer.params_error
     end
 
-    it 'can return a 400 if the quantity param is invalid in the request' do
+    it 'can return a 400 if the quantity param is invalid within the request' do
       get '/api/v1/revenue/merchants?quantity=dsfdsfsdfsdfdsfs'
       expect(response.status).to eq 400
 
@@ -100,7 +100,7 @@ RSpec.describe 'api/v1/revenue/merchants' do
       expect(json_response).to eq JsonSerializer.params_error
     end
 
-    it 'can return a 400 if the quantity param is missing from the request' do
+    it 'can return a 400 if the quantity param is missing within the request' do
       get '/api/v1/revenue/merchants'
       expect(response.status).to eq 400
 

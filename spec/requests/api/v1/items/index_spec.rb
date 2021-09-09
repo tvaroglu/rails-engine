@@ -23,6 +23,7 @@ RSpec.describe 'api/v1/items#index' do
         expect(record[:attributes][:name].class).to eq String
         expect(record[:attributes][:description].class).to eq String
         expect(record[:attributes][:unit_price].class).to eq Float
+        expect(record[:attributes]).to have_key(:merchant_id)
       end
     end
 
@@ -56,6 +57,7 @@ RSpec.describe 'api/v1/items#index' do
         expect(record[:attributes][:name].class).to eq String
         expect(record[:attributes][:description].class).to eq String
         expect(record[:attributes][:unit_price].class).to eq Float
+        expect(record[:attributes]).to have_key(:merchant_id)
       end
     end
   end
