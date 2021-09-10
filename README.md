@@ -6,6 +6,8 @@
 [![Forks][forks-shield]][forks-url]
 
 ## Welcome to Rails Engine: A hand-rolled RESTful JSON API
+
+### [Schema](https://dbdesigner.page.link/GJiEhJGfXZSc8YUY7)
 <p align="center">
   <img src="https://user-images.githubusercontent.com/58891447/132774822-db17c2f6-c8cf-46dd-9ce0-9ac1796fea87.png" alt="rails_engine_db_schema"/>
 </p>
@@ -27,7 +29,7 @@ Find the project spec [here](https://backend.turing.edu/module3/projects/rails_e
 
 [Rails Engine](https://github.com/tvaroglu/rails-engine) is a 7 day, 1 person project, during Mod 3 of 4 for Turing School's Back End Engineering Program.
 
-The challenge was to build a fully functional [JSON API 1.0 spec](https://jsonapi.org/)-compliant REST API that exposes resources for multiple relational databases, modeling a true back-end framework that could be consumed by an entirely separate front end web application.
+The challenge was to build a fully functional [JSON API 1.0 spec](https://jsonapi.org/)-compliant REST API that exposes endpoints for multiple resources from a relational database, modeling a true back-end framework that could be consumed by an entirely separate front-end framework.
 
 Learning goals and areas of focus consisted of:
 
@@ -136,7 +138,7 @@ GET `/api/v1/revenue`
 
 ## <ins>Setup</ins>
 
-This project requires Ruby 2.7.2.
+This project requires Ruby 2.7.2 and Rails 5.2.6.
 
 * Fork this repository
 * Install gems and set up your database:
@@ -144,7 +146,7 @@ This project requires Ruby 2.7.2.
     * `rails db:{drop,create,migrate,seed}`
     * `rails db:schema:dump`
 * Run the test suite with `bundle exec rspec -fd`
-* Run your development server via `rails s` to see the app in action
+* Run your development server with `rails s`
 
 
 ### Project Configurations
