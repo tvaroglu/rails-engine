@@ -19,7 +19,7 @@ Find the project spec [here](https://backend.turing.edu/module3/projects/rails_e
 - [Overview](#overview)
 - [Tools Utilized](#framework)
 - [Contributors](#contributors)
-- [Deployed Endpoints](#deployed-endpoints)
+- [Sample Endpoints](#sample-endpoints)
 - [Project Configurations](#setup)
 
 
@@ -100,38 +100,38 @@ Learning goals and areas of focus consisted of:
 [issues-shield]: https://img.shields.io/github/issues/tvaroglu/rails-engine.svg?style=flat
 [issues-url]: https://github.com/tvaroglu/rails-engine/issues
 
-## <ins>Deployed Endpoints</ins>
-GET `/api/v1/merchants`
-  * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/merchants" target="_blank">All Merchants</a>
+## <ins>Sample Endpoints</ins>
+`GET` Merchants
+  * <span>Get All Merchants: `{{base_url}}/api/v1/merchants`</span>
     * Optional `query params` for pagination:
         * `?per_page=<integer>`
         * `?page=<integer>`
-  * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/merchants/1" target="_blank">Find a Merchant by id</a>
-  * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/merchants/find?name=ill" target="_blank">Find a Merchant by Name</a>
+  * <span>Get Merchant by Id: `{{base_url}}/api/v1/merchants/{{id}}`</span>
+  * <span>Get Merchant by Name: `{{base_url}}/api/v1/merchants/find?name={{search_param}}`</span>
     * REQUIRED `query params` for search:
         * `?name=<string>`
-  * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/merchants/1/items" target="_blank">Find a Merchant's Items</a>
-  * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/merchants/most_items?quantity=8" target="_blank">Merchants Ranked by Items Sold</a>
+  * <span>Get Merchant's Items: `{{base_url}}/api/v1/merchants/{{id}}/items`</span>
+  * <span>Get Top Merchants by Items Sold:`{{base_url}}/api/v1/merchants/most_items?quantity={{search_param}}`</span>
     * REQUIRED `query params` for search:
         * `?quantity=<integer>`
 
-GET `/api/v1/items`
-  * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/items" target="_blank">All Items</a>
+`GET` Items
+  * <span>Get All Items: `{{base_url}}/api/v1/items`</span>
     * Optional `query params` for pagination:
         * `?per_page=<integer>`
         * `?page=<integer>`
-  * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/items/1" target="_blank">Find an Item by id</a>
-  * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/items/find_all?name=haru" target="_blank">Find Items by Name</a>
+  * <span>Get Item by Id: `{{base_url}}/api/v1/items/{{id}}`</span>
+  * <span>Get Item by Name: `{{base_url}}/api/v1/items/find_all?name={{search_param}}`</span>
     * REQUIRED `query params` for search:
         * `?name=<string>`
-  * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/items/1/merchant" target="_blank">Find an Item's Merchant</a>
+  * <span>Get Item's Merchant: `{{base_url}}/api/v1/items/{{id}}/merchant`</span>
 
-GET `/api/v1/revenue`
-  * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/revenue/merchants?quantity=10" target="_blank">Merchants Ranked by Revenue</a>
+`GET` Revenue
+  * <span>Get Merchants Ranked by Revenue: `{{base_url}}/api/v1/revenue/merchants?quantity={{search_param}}`</span>
     * REQUIRED `query params` for search:
         * `?quantity=<integer>`
-  * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/revenue/merchants/1" target="_blank">Revenue for a Merchant</a>
-  * <a href="https://tvaroglu-rails-engine.herokuapp.com/api/v1/revenue/items" target="_blank">Items Ranked by Revenue</a>
+  * <span>Get Revenue for a Merchant: `{{base_url}}/api/v1/revenue/merchants/{{id}}`</span>
+  * <span>Get Items Ranked by Revenue: `{{base_url}}/api/v1/revenue/items`</span>
     * Optional `query params` for search:
         * `?quantity=<integer>`
 
